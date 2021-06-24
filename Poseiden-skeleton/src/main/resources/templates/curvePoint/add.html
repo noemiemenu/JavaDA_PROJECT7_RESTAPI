@@ -15,9 +15,6 @@
 
 	<div class="row">
 		<form action="#" th:action="@{/curvePoint/validate}" method="post" class="form-horizontal" style="width: 100%">
-			<!--
-			TODO: Create a form to input the values of CurvePoint, there are 2 buttons: Save data and Cancel to the list CurvePoint
-			 -->
 			<div th:if="${param.error}">
 				<p class="text-danger" th:text="${param.error}"></p>
 			</div>
