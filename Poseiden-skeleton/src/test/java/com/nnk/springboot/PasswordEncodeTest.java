@@ -13,12 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Khang Nguyen.
- * Email: khang.nguyen@banvien.com
- * Date: 09/03/2019
- * Time: 11:26 AM
- */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PasswordEncodeTest {
