@@ -1,6 +1,6 @@
 package com.nnk.springboot.interfaces;
 
-import com.nnk.springboot.exceptions.NumberFormatException;
+
 import com.nnk.springboot.model.CurvePoint;
 
 public interface CurveService {

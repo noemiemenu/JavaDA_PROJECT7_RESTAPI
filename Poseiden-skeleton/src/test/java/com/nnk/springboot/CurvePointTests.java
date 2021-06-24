@@ -1,6 +1,6 @@
 package com.nnk.springboot;
 
-import com.nnk.springboot.exceptions.NumberFormatException;
+
 import com.nnk.springboot.interfaces.CurveService;
 import com.nnk.springboot.model.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @Transactional
 @RunWith(SpringRunner.class)

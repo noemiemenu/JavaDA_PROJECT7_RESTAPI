@@ -1,7 +1,6 @@
 package com.nnk.springboot;
 
-import com.nnk.springboot.exceptions.NumberFormatException;
-import com.nnk.springboot.forms.AddBidListForm;
+
 import com.nnk.springboot.interfaces.BidListService;
 import com.nnk.springboot.model.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @RunWith(SpringRunner.class)

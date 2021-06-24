@@ -1,11 +1,11 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.interfaces.UserService;
+
+import com.nnk.springboot.config.PasswordValidator;
 import com.nnk.springboot.model.User;
 import com.nnk.springboot.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -40,9 +41,13 @@ public class UserController {
     }
 
     @PostMapping("/user/validate")
-    public String validate(@Valid User user, BindingResult result, Model model) {
+    public String validate(@Valid User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         log.info("validate: " + user);
         if (!result.hasErrors()) {
+            if (!PasswordValidator.isValid(user.getPassword())){
+                redirectAttributes.addAttribute("error_password",true);
+                return "redirect:/user/add";
+            }
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);

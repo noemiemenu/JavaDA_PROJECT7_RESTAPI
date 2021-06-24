@@ -1,6 +1,6 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.exceptions.NumberFormatException;
+
 import com.nnk.springboot.interfaces.CurveService;
 import com.nnk.springboot.model.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
