@@ -45,9 +45,14 @@ public class TradeController {
     }
 
     @GetMapping("/trade/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         log.info("showUpdateForm Trade:  " + id);
-        model.addAttribute("trade", tradeRepository.findTradeById(id));
+        Trade trade = tradeRepository.findTradeById(id);
+        if (trade == null){
+            redirectAttributes.addAttribute("id_not_found", true);
+            return  "redirect:/trade/list";
+        }
+        model.addAttribute("trade", trade);
         return "trade/update";
     }
 

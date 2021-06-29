@@ -48,9 +48,14 @@ public class CurveController {
     }
 
     @GetMapping("/curvePoint/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         log.info("showUpdateForm: " + id);
-        model.addAttribute("curvePoint", curvePointRepository.findCurvePointById(id));
+        CurvePoint curvePoint = curvePointRepository.findCurvePointById(id);
+        if (curvePoint == null){
+            redirectAttributes.addAttribute("id_not_found", true);
+            return  "redirect:/curvePoint/list";
+        }
+        model.addAttribute("curvePoint", curvePoint);
         return "curvePoint/update";
     }
 

@@ -22,6 +22,9 @@
 				<input type="submit" value="Logout"/>
 			</form>
 		</div>
+		<div th:if="${param.id_not_found}">
+			<p class="text-danger" >Rating not found</p>
+		</div>
 	</div>
 	<div class="row"><h2>Rating List</h2></div>
 	<div class="row">
