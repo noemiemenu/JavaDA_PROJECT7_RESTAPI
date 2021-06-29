@@ -22,6 +22,9 @@
                 <input type="submit" value="Logout"/>
             </form>
         </div>
+        <div th:if="${param.id_not_found}">
+            <p class="text-danger" >Bid List not found</p>
+        </div>
     </div>
     <div class="row"><h2>Bid List</h2></div>
     <div class="row">

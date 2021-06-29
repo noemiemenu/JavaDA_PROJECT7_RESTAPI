@@ -24,7 +24,6 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public void validateRating(Rating rating){
 
-
         Rating addRating = new Rating();
         addRating.setMoodysRating(rating.getMoodysRating());
         addRating.setSandPRating(rating.getSandPRating());
@@ -36,9 +35,6 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public void deleteRating(Integer id) {
-
-       Rating rating = ratingRepository.findRatingById(id);
-       ratingRepository.delete(rating);
-
+       ratingRepository.deleteById(id);
     }
 }

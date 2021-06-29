@@ -48,9 +48,14 @@ public class BidListController {
     }
 
     @GetMapping("/bidList/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         log.info("showUpdateForm: " + id);
-        model.addAttribute("bidList", bidListRepository.findBidListById(id));
+        BidList bidList = bidListRepository.findBidListById(id);
+        if (bidList == null){
+            redirectAttributes.addAttribute("id_not_found", true);
+            return  "redirect:/bidList/list";
+        }
+        model.addAttribute("bidList", bidList );
         return "bidList/update";
     }
 

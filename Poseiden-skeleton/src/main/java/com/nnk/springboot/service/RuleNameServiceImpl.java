@@ -35,7 +35,6 @@ public class RuleNameServiceImpl implements RuleNameService {
 
     @Override
     public void deleteRuleName(Integer id) {
-        RuleName ruleName = ruleNameRepository.findRuleNameById(id);
-        ruleNameRepository.delete(ruleName);
+        ruleNameRepository.deleteById(id);
     }
 }

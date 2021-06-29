@@ -44,18 +44,23 @@ public class RuleNameController {
         log.info("validate: ruleName: " + ruleName.getName()
                 + " Description: " + ruleName.getDescription()
                 + " Json: " + ruleName.getJson()
-                + "Template:" + ruleName.getTemplate()
-                + "SqlStr:" + ruleName.getSqlStr()
-                + "SqlPart:" + ruleName.getSqlPart());
+                + " Template:" + ruleName.getTemplate()
+                + " SqlStr:" + ruleName.getSqlStr()
+                + " SqlPart:" + ruleName.getSqlPart());
 
         ruleNameService.validateRuleName(ruleName);
         return "redirect:/ruleName/list";
     }
 
     @GetMapping("/ruleName/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         log.info("showUpdateForm: Rating  " + id);
-        model.addAttribute("ruleName", ruleNameRepository.findRuleNameById(id));
+        RuleName ruleName = ruleNameRepository.findRuleNameById(id);
+        if (ruleName == null){
+            redirectAttributes.addAttribute("id_not_found", true);
+            return  "redirect:/ruleName/list";
+        }
+        model.addAttribute("ruleName", ruleName );
         return "ruleName/update";
     }
 

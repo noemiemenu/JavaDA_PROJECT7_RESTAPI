@@ -49,9 +49,14 @@ public class RatingController {
     }
 
     @GetMapping("/rating/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         log.info("showUpdateForm: Rating  " + id);
-        model.addAttribute("rating", ratingRepository.findRatingById(id));
+        Rating rating = ratingRepository.findRatingById(id);
+        if (rating == null){
+            redirectAttributes.addAttribute("id_not_found", true);
+            return  "redirect:/rating/list";
+        }
+        model.addAttribute("rating", rating);
         return "rating/update";
     }
 
