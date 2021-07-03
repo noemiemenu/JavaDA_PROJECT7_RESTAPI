@@ -1,5 +1,6 @@
 package com.nnk.springboot.controllers;
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.TradeService;
 import com.nnk.springboot.model.Trade;
 import com.nnk.springboot.repositories.TradeRepository;
@@ -38,9 +39,14 @@ public class TradeController {
     }
 
     @PostMapping("/trade/validate")
-    public String validate(@Valid Trade trade) {
+    public String validate(@Valid Trade trade, RedirectAttributes redirectAttributes) {
         log.info("validate trade: name " + trade.getAccount() + " Type: " + trade.getType());
-        tradeService.validateTrade(trade);
+        try {
+            tradeService.validateTrade(trade);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative", true);
+            return "redirect:/trade/add";
+        }
         return "redirect:/trade/list";
     }
 
@@ -62,12 +68,17 @@ public class TradeController {
         if(result.hasErrors()){
             redirectAttributes.addAttribute("error", true);
         }
-        tradeService.updateTrade(id, trade);
+        try {
+            tradeService.updateTrade(id, trade);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative", true);
+            return "redirect:/trade/update/{id}";
+        }
         return "redirect:/trade/list";
     }
 
     @GetMapping("/trade/delete/{id}")
-    public String deleteTrade(@PathVariable("id") Integer id, Model model) {
+    public String deleteTrade(@PathVariable("id") Integer id) {
         log.info("delete Trade:" + id);
         tradeService.deleteTrade(id);
         return "redirect:/trade/list";

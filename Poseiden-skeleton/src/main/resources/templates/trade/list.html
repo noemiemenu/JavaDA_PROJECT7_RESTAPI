@@ -31,20 +31,24 @@
 		<a href="/trade/add" class="btn btn-primary btn-sm">Add New</a>
 		<table class="table table-bordered">
 			<thead>
-				<tr>
+				<tr class="text-center">
 					<th>Id</th>
 					<th>Account</th>
 					<th>Type</th>
 					<th>Buy Quantity</th>
+					<th>Creation date</th>
+					<th>Revision date</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
-			<tr th:each="trade : ${trades}">
+			<tr class="text-center" th:each="trade : ${trades}">
 				<td th:text="${trade.getId()}"></td>
 				<td th:text="${trade.getAccount()}"></td>
 				<td th:text="${trade.getType()}"></td>
 				<td th:text="${trade.getBuyQuantity()}"></td>
+				<td th:text="${trade.getCreationDate()}"></td>
+				<td th:text="${trade.getRevisionDate()}"></td>
 				<td class="text-center">
 					<a th:href="@{/trade/update/{id}(id=${trade.getId()})}">Edit</a>&nbsp;|&nbsp;
 					<a th:href="@{/trade/delete/{id}(id=${trade.getId()})}">Delete</a>

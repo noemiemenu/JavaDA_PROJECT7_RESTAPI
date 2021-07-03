@@ -2,6 +2,7 @@ package com.nnk.springboot.service;
 
 
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.BidListService;
 import com.nnk.springboot.model.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
@@ -19,20 +20,24 @@ public class BidListServiceImpl implements BidListService {
 
 
     @Override
-    public void validate(BidList bidList) {
-
+    public void validate(BidList bidList) throws NegativeNumberException {
+        if(bidList.getBidQuantity() < 0){
+            throw new NegativeNumberException("Bid Quantity cannot be negative");
+        }
         BidList bid = new BidList();
         bid.setAccount(bidList.getAccount());
         bid.setType(bidList.getType());
         bid.setBidQuantity(bidList.getBidQuantity());
         bid.setCreationDate(Timestamp.valueOf(LocalDateTime.now()));
         bidListRepository.save(bid);
-
-
     }
 
     @Override
-    public void updateBid(Integer id, BidList bidList){
+    public void updateBid(Integer id, BidList bidList) throws NegativeNumberException {
+        if(bidList.getBidQuantity() < 0){
+            throw new NegativeNumberException("Bid Quantity cannot be negative");
+        }
+
         BidList bidListInDb = bidListRepository.findBidListById(id);
 
         bidListInDb.setAccount(bidList.getAccount());

@@ -1,6 +1,7 @@
 package com.nnk.springboot;
 
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.BidListService;
 import com.nnk.springboot.model.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
 @Transactional
@@ -67,7 +71,7 @@ public class BidTests {
 	}
 
 	@Test
-	public void updateBidListTest() {
+	public void updateBidListTest(){
 		//given
 		BidList bid = new BidList("Account", "Type Test", 10);
 		bid = bidListRepository.save(bid);
@@ -76,7 +80,7 @@ public class BidTests {
 		BidList bidList = new BidList("Account", "Type Test", 20);
 
 		//when
-		bidListService.updateBid(id, bidList);
+		assertDoesNotThrow(() -> bidListService.updateBid(id, bidList));
 
 		//then
 		Assert.assertEquals(bid.getBidQuantity(), 20d, 20d);
@@ -88,11 +92,34 @@ public class BidTests {
 		BidList addBidList = new BidList("Account Test", "Type Test", 20);
 
 		//when
-		bidListService.validate(addBidList);
+		assertDoesNotThrow(() ->bidListService.validate(addBidList));
 
 		//then
 		BidList bid = bidListRepository.findBidListIdByAccount("Account Test");
 		Optional<BidList> bidList = bidListRepository.findById(bid.getId());
 		Assert.assertTrue(bidList.isPresent());
+	}
+
+	@Test
+	public void validateBidListTest_Throw_NegativeNumberException() {
+		//given
+		BidList addBidList = new BidList("Account Test", "Type Test", -1);
+		//when
+		assertThrows(NegativeNumberException.class, () ->bidListService.validate(addBidList));
+
+	}
+
+	@Test
+	public void updateBidListTest_Throw_NegativeNumberException() {
+		//given
+		BidList bid = new BidList("Account", "Type Test", 10);
+		bid = bidListRepository.save(bid);
+		Integer id = bid.getId();
+
+		BidList bidList = new BidList("Account", "Type Test", -10);
+
+		//when
+		assertThrows(NegativeNumberException.class, () -> bidListService.updateBid(id,bidList));
+
 	}
 }

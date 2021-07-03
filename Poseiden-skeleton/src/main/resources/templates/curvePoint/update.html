@@ -17,6 +17,9 @@
 			<div th:if="${param.error}">
 				<p class="text-danger" th:text="${param.error}"></p>
 			</div>
+			<div th:if="${param.error_number_negative}">
+				<p class="text-danger" >Number cannot be negative</p>
+			</div>
 			<div class="row mb-3">
 				<div class="mb-3">
 					<label for="curveId" class="form-label">CurveId</label>

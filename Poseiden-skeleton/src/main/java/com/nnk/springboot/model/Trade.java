@@ -41,8 +41,9 @@ public class Trade {
     private String sourceListId;
     private String side;
 
-    public Trade(String account, String type) {
+    public Trade(String account, String type, double buyQuantity ) {
         this.type = type;
         this.account = account;
+        this.buyQuantity = buyQuantity;
     }
 }

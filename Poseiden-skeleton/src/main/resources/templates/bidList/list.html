@@ -23,7 +23,7 @@
             </form>
         </div>
         <div th:if="${param.id_not_found}">
-            <p class="text-danger" >Bid List not found</p>
+            <p class="text-danger">Bid List not found</p>
         </div>
     </div>
     <div class="row"><h2>Bid List</h2></div>
@@ -31,21 +31,25 @@
         <a href="/bidList/add" class="btn btn-primary btn-sm">Add New</a>
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Account</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Bid Quantity</th>
-                    <th scope="col">Action</th>
+                <tr class="text-center">
+                    <th>Id</th>
+                    <th>Account</th>
+                    <th>Type</th>
+                    <th>Bid Quantity</th>
+                    <th>Creation date</th>
+                    <th>Revision date</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="bidList : ${bidLists}">
+                <tr class="text-center" th:each="bidList : ${bidLists}">
                     <td th:text="${bidList.getId()}"></td>
                     <td th:text="${bidList.getAccount()}"></td>
                     <td th:text="${bidList.getType()}"></td>
                     <td th:text="${bidList.getBidQuantity()}"></td>
-                    <td class="text-center">
+                    <td th:text="${bidList.getCreationDate()}"></td>
+                    <td th:text="${bidList.getRevisionDate()}"></td>
+                    <td>
                         <a th:href="@{/bidList/update/{id}(id=${bidList.getId()})}">Edit</a>&nbsp;|&nbsp;
                         <a th:href="@{/bidList/delete/{id}(id=${bidList.getId()})}">Delete</a>
                     </td>

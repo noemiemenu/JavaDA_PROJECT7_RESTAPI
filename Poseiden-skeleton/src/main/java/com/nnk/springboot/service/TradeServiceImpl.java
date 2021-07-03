@@ -1,5 +1,6 @@
 package com.nnk.springboot.service;
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.TradeService;
 import com.nnk.springboot.model.Trade;
 import com.nnk.springboot.repositories.TradeRepository;
@@ -15,7 +16,10 @@ public class TradeServiceImpl implements TradeService {
     private final TradeRepository tradeRepository;
 
     @Override
-    public void validateTrade(Trade trade){
+    public void validateTrade(Trade trade) throws NegativeNumberException {
+        if (trade.getBuyQuantity() < 0){
+            throw new NegativeNumberException("Buy Quantity cannot be negative");
+        }
 
         Trade addTrade = new Trade();
         addTrade.setAccount(trade.getAccount());
@@ -26,7 +30,10 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public void updateTrade(Integer id, Trade trade) {
+    public void updateTrade(Integer id, Trade trade) throws NegativeNumberException {
+        if (trade.getBuyQuantity() < 0){
+            throw new NegativeNumberException("Buy Quantity cannot be negative");
+        }
         Trade tradeInDb = tradeRepository.findTradeById(id);
         tradeInDb.setAccount(trade.getAccount());
         tradeInDb.setType(trade.getType());

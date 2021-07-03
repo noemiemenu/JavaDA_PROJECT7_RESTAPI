@@ -32,6 +32,9 @@
 					<input th:field="*{type}" type=text class="form-control" id="type" placeholder="Type" required>
 				</div>
 			</div>
+			<div th:if="${param.error_number_negative}">
+				<p class="text-danger" >Bid Quantity cannot be negative</p>
+			</div>
 			<div class="row mb-3">
 				<div class="mb-3">
 					<label for="bidQuantity" class="form-label">Bid quantity</label>

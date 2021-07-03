@@ -31,7 +31,7 @@
 		<a href="/ruleName/add" class="btn btn-primary btn-sm">Add New</a>
 		<table class="table table-bordered">
 			<thead>
-				<tr>
+				<tr class="text-center">
 					<th>Id</th>
 					<th>Name</th>
 					<th>Description</th>
@@ -43,7 +43,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			<tr th:each="ruleName : ${ruleNames}">
+			<tr class="text-center" th:each="ruleName : ${ruleNames}">
 				<td th:text="${ruleName.getId()}"></td>
 				<td th:text="${ruleName.getName()}"></td>
 				<td th:text="${ruleName.getDescription()}"></td>

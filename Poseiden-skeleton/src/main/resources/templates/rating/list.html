@@ -31,7 +31,7 @@
 		<a href="/rating/add" class="btn btn-primary btn-sm">Add New</a>
 		<table class="table table-bordered">
 			<thead>
-				<tr>
+				<tr class="text-center">
 					<th>Id</th>
 					<th>MoodysRating</th>
 					<th>SandPRating</th>
@@ -41,7 +41,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			<tr th:each="rating : ${ratings}">
+			<tr class="text-center" th:each="rating : ${ratings}">
 				<td th:text="${rating.getId()}"></td>
 				<td th:text="${rating.getMoodysRating()}"></td>
 				<td th:text="${rating.getSandPRating()}"></td>
