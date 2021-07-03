@@ -27,6 +27,9 @@
                     <input name="type" type=text class="form-control" id="type" required placeholder="Type">
                 </div>
             </div>
+            <div th:if="${param.error_number_negative}">
+                <p class="text-danger" >Buy Quantity cannot be negative</p>
+            </div>
             <div class="row mb-3">
                 <div class="mb-3">
                     <label for="buyQuantity" class="form-label">Buy Quantity</label>

@@ -1,5 +1,6 @@
 package com.nnk.springboot;
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.RatingService;
 import com.nnk.springboot.model.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
@@ -12,6 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @Transactional
 @RunWith(SpringRunner.class)
@@ -72,7 +76,7 @@ public class RatingTests {
 		Rating updateRating = new Rating("moodysTest","sandTest","fitchTest",20);
 
 		//when
-		ratingService.updateRating(id, updateRating);
+		assertDoesNotThrow(() -> ratingService.updateRating(id, updateRating));
 
 		//then
 		Assert.assertEquals(rating.getMoodysRating(),"moodysTest", "moodysTest");
@@ -84,11 +88,31 @@ public class RatingTests {
 		Rating addRating = new Rating("moodysTest","sandTest","fitchTest",20);
 
 		//when
-		ratingService.validateRating(addRating);
+		assertDoesNotThrow(() -> ratingService.validateRating(addRating));
 
 		//then
 		Rating ratingId = ratingRepository.findIdByMoodysRatingAndOrderNumber("moodysTest", 20);
 		Optional<Rating> rating = ratingRepository.findById(ratingId.getId());
 		Assert.assertTrue(rating.isPresent());
 	}
+
+	@Test
+	public void validateRatingTest_Throw_NegativeNumberException() {
+		Rating addRating = new Rating("moodysTest","sandTest","fitchTest",-20);
+
+		assertThrows(NegativeNumberException.class, () ->ratingService.validateRating(addRating));
+	}
+
+	@Test
+	public void updateRatingTest_Throw_NegativeNumberException() {
+		Rating rating = new Rating("moodys","sand","fitch",10);
+		rating = ratingRepository.save(rating);
+		Integer id = rating.getId();
+
+		Rating updateRating = new Rating("moodysTest","sandTest","fitchTest",-20);
+
+		assertThrows(NegativeNumberException.class, () ->ratingService.updateRating(id, updateRating));
+
+	}
+
 }

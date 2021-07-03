@@ -1,6 +1,7 @@
 package com.nnk.springboot.controllers;
 
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.BidListService;
 import com.nnk.springboot.model.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
@@ -40,9 +41,14 @@ public class BidListController {
     }
 
     @PostMapping("/bidList/validate")
-    public String validate(@Valid BidList bidList) {
+    public String validate(@Valid BidList bidList, RedirectAttributes redirectAttributes) {
         log.info("validate: account; " + bidList.getAccount() + " type; " + bidList.getType() + " quantity; " + bidList.getBidQuantity());
-        bidListService.validate(bidList);
+        try {
+            bidListService.validate(bidList);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative",true);
+            return "redirect:/bidList/add";
+        }
 
         return "redirect:/bidList/list";
     }
@@ -65,7 +71,12 @@ public class BidListController {
         if(result.hasErrors()){
           redirectAttributes.addAttribute("error", true);
         }
-        bidListService.updateBid(id, bidList);
+        try {
+            bidListService.updateBid(id, bidList);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative", true);
+            return "redirect:/bidList/update/{id}";
+        }
 
         return "redirect:/bidList/list";
     }

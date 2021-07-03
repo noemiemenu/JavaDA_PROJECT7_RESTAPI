@@ -1,6 +1,7 @@
 package com.nnk.springboot.controllers;
 
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.CurveService;
 import com.nnk.springboot.model.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
@@ -41,9 +42,14 @@ public class CurveController {
     }
 
     @PostMapping("/curvePoint/validate")
-    public String validate(@Valid CurvePoint curvePoint) {
+    public String validate(@Valid CurvePoint curvePoint, RedirectAttributes redirectAttributes) {
         log.info("validate: CurveId; " + curvePoint.getCurveId() + " Term; " + curvePoint.getTerm() + " Value; " + curvePoint.getValue());
-        curveService.validateCurvePoint(curvePoint);
+        try {
+            curveService.validateCurvePoint(curvePoint);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative",true);
+            return "redirect:/curvePoint/add";
+        }
         return "redirect:/curvePoint/list";
     }
 
@@ -65,7 +71,12 @@ public class CurveController {
         if(result.hasErrors()){
             redirectAttributes.addAttribute("error", true);
         }
-        curveService.updateCurvePoint(id, curvePoint);
+        try {
+            curveService.updateCurvePoint(id, curvePoint);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative",true);
+            return "redirect:/curvePoint/update/{id}";
+        }
 
         return "redirect:/curvePoint/list";
     }

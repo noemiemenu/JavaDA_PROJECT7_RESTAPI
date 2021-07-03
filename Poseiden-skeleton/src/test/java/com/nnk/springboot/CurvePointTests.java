@@ -1,6 +1,7 @@
 package com.nnk.springboot;
 
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.CurveService;
 import com.nnk.springboot.model.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
@@ -77,7 +79,7 @@ public class CurvePointTests {
 		CurvePoint updateCurve = new CurvePoint(3, 4, 20);
 
 		//when
-		curveService.updateCurvePoint(id, updateCurve );
+		assertDoesNotThrow(() ->curveService.updateCurvePoint(id, updateCurve));
 
 		//then
 		Assert.assertEquals(curvePoint.getTerm(),4, 4);
@@ -89,12 +91,31 @@ public class CurvePointTests {
 		CurvePoint addCurvePointForm = new CurvePoint(1, 1, 22);
 
 		//when
-		curveService.validateCurvePoint(addCurvePointForm);
+		assertDoesNotThrow(() -> curveService.validateCurvePoint(addCurvePointForm));
 
 		//then
 		CurvePoint curvePoint = curvePointRepository.findCurvePointByCurveIdAndTermAndValue(1, 1, 22);
 		Optional<CurvePoint> curve = curvePointRepository.findById(curvePoint.getId());
 		Assert.assertTrue(curve.isPresent());
+	}
+
+	@Test
+	public void validateCurvePoint_Throw_NegativeNumberException() {
+		CurvePoint addCurvePointForm = new CurvePoint(-1, -1, -22);
+
+		assertThrows(NegativeNumberException.class, () ->curveService.validateCurvePoint(addCurvePointForm));
+
+	}
+
+	@Test
+	public void updateCurvePointTest_Throw_NegativeNumberException(){
+		CurvePoint curvePoint = new CurvePoint(2, 3, 10);
+		curvePoint = curvePointRepository.save(curvePoint);
+		Integer id = curvePoint.getId();
+
+		CurvePoint updateCurve = new CurvePoint(-3, -4, -20);
+
+		assertThrows(NegativeNumberException.class, () ->curveService.updateCurvePoint(id, updateCurve));
 	}
 
 }

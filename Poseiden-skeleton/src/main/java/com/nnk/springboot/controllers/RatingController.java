@@ -1,5 +1,6 @@
 package com.nnk.springboot.controllers;
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.RatingService;
 import com.nnk.springboot.model.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
@@ -38,13 +39,18 @@ public class RatingController {
     }
 
     @PostMapping("/rating/validate")
-    public String validate(@Valid Rating rating) {
+    public String validate(@Valid Rating rating, RedirectAttributes redirectAttributes) {
         log.info("validate: FitchRating; " + rating.getFitchRating()
                 + " MoodysRating; " + rating.getMoodysRating()
                 + " SandPRating; " + rating.getSandPRating()
                 + "OrderNumber" + rating.getOrderNumber());
 
-        ratingService.validateRating(rating);
+        try {
+            ratingService.validateRating(rating);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative",true);
+            return "redirect:/rating/add";
+        }
         return "redirect:/rating/list";
     }
 
@@ -66,7 +72,12 @@ public class RatingController {
         if(result.hasErrors()){
             redirectAttributes.addAttribute("error", true);
         }
-        ratingService.updateRating(id, rating);
+        try {
+            ratingService.updateRating(id, rating);
+        } catch (NegativeNumberException e) {
+            redirectAttributes.addAttribute("error_number_negative",true);
+            return "redirect:/rating/update/{id}";
+        }
         return "redirect:/rating/list";
     }
 

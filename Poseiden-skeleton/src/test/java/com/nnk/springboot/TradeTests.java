@@ -1,5 +1,6 @@
 package com.nnk.springboot;
 
+import com.nnk.springboot.exception.NegativeNumberException;
 import com.nnk.springboot.interfaces.TradeService;
 import com.nnk.springboot.model.RuleName;
 import com.nnk.springboot.model.Trade;
@@ -15,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,7 +31,7 @@ public class TradeTests {
 
 	@Test
 	public void tradeTest() {
-		Trade trade = new Trade("Trade Account", "Type");
+		Trade trade = new Trade("Trade Account", "Type", 10);
 
 		// Save
 		trade = tradeRepository.save(trade);
@@ -52,7 +56,7 @@ public class TradeTests {
 
 	@Test
 	public void deleteTradeTest() {
-		Trade trade = new Trade("Trade Account", "Type");
+		Trade trade = new Trade("Trade Account", "Type",10);
 		trade = tradeRepository.save(trade);
 		Integer id = trade.getId();
 
@@ -64,30 +68,51 @@ public class TradeTests {
 	@Test
 	public void updateTradeTest() {
 		//given
-		Trade trade = new Trade("Trade Account", "Type");
+		Trade trade = new Trade("Trade Account", "Type", 10);
 		trade = tradeRepository.save(trade);
 		Integer id = trade.getId();
 
-		Trade updateTrade = new Trade("Test", "Test");
+		Trade updateTrade = new Trade("Test", "Test",10);
 
 		//when
-		tradeService.updateTrade(id, updateTrade);
+		assertDoesNotThrow(() -> tradeService.updateTrade(id, updateTrade));
 
 		//then
 		Assert.assertEquals(trade.getAccount(),"Test", "Test");
 		Assert.assertEquals(trade.getType(),"Test", "Test");
+		Assert.assertEquals(trade.getBuyQuantity(),10, 10);
 	}
 
 	@Test
 	public void validateTradeTest() {
 		//given
-		Trade trade = new Trade("Trade Account", "Type");
+		Trade trade = new Trade("Trade Account", "Type",10);
 		//when
-		tradeService.validateTrade(trade);
+		assertDoesNotThrow(() -> tradeService.validateTrade(trade));
 
 		//then
-		Trade tradeIdByAccountAndType = tradeRepository.findIdByAccountAndType("Trade Account", "Type");
+		Trade tradeIdByAccountAndType = tradeRepository.findIdByAccountAndTypeAndBuyQuantity("Trade Account", "Type", 10);
 		Optional<Trade> tradeId = tradeRepository.findById(tradeIdByAccountAndType.getId());
 		Assert.assertTrue(tradeId.isPresent());
 	}
+
+	@Test
+	public void validateTradeTest_Throw_NegativeNumberException(){
+		Trade trade = new Trade("Trade Account", "Type",-10);
+
+		assertThrows(NegativeNumberException.class, () ->tradeService.validateTrade(trade));
+	}
+
+	@Test
+	public void updateTradeTest_Throw_NegativeNumberException(){
+		Trade trade = new Trade("Trade Account", "Type", 10);
+		trade = tradeRepository.save(trade);
+		Integer id = trade.getId();
+
+		Trade updateTrade = new Trade("Test", "Test",-10);
+
+		assertThrows(NegativeNumberException.class, () ->tradeService.updateTrade(id, updateTrade));
+	}
+
+
 }
