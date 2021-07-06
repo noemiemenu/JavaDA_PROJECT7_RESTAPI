@@ -37,7 +37,6 @@
                     <th>Type</th>
                     <th>Bid Quantity</th>
                     <th>Creation date</th>
-                    <th>Revision date</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -48,7 +47,6 @@
                     <td th:text="${bidList.getType()}"></td>
                     <td th:text="${bidList.getBidQuantity()}"></td>
                     <td th:text="${bidList.getCreationDate()}"></td>
-                    <td th:text="${bidList.getRevisionDate()}"></td>
                     <td>
                         <a th:href="@{/bidList/update/{id}(id=${bidList.getId()})}">Edit</a>&nbsp;|&nbsp;
                         <a th:href="@{/bidList/delete/{id}(id=${bidList.getId()})}">Delete</a>

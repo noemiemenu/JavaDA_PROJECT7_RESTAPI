@@ -37,7 +37,6 @@
 					<th>Type</th>
 					<th>Buy Quantity</th>
 					<th>Creation date</th>
-					<th>Revision date</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -48,7 +47,6 @@
 				<td th:text="${trade.getType()}"></td>
 				<td th:text="${trade.getBuyQuantity()}"></td>
 				<td th:text="${trade.getCreationDate()}"></td>
-				<td th:text="${trade.getRevisionDate()}"></td>
 				<td class="text-center">
 					<a th:href="@{/trade/update/{id}(id=${trade.getId()})}">Edit</a>&nbsp;|&nbsp;
 					<a th:href="@{/trade/delete/{id}(id=${trade.getId()})}">Delete</a>

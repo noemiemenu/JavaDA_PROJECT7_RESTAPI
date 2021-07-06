@@ -43,7 +43,6 @@ public class BidListServiceImpl implements BidListService {
         bidListInDb.setAccount(bidList.getAccount());
         bidListInDb.setType(bidList.getType());
         bidListInDb.setBidQuantity(bidList.getBidQuantity());
-        bidListInDb.setRevisionDate(Timestamp.valueOf(LocalDateTime.now()));
         bidListRepository.save(bidListInDb);
     }
 

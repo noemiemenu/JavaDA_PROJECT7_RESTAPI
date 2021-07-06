@@ -38,7 +38,6 @@ public class TradeServiceImpl implements TradeService {
         tradeInDb.setAccount(trade.getAccount());
         tradeInDb.setType(trade.getType());
         tradeInDb.setBuyQuantity(trade.getBuyQuantity());
-        tradeInDb.setRevisionDate(Timestamp.valueOf(LocalDateTime.now()));
         tradeRepository.save(tradeInDb);
     }
 
